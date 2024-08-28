@@ -4,7 +4,7 @@ import sodium from 'libsodium-wrappers';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getPublicKey(octokit: any, owner: string, repo: string) {
-  const { data: keyData } = octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
+  const { data: keyData } = await octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
     owner,
     repo,
     headers: {
