@@ -1,20 +1,23 @@
-import {getInput, info, setFailed} from '@actions/core';
-import {getOctokit, context} from '@actions/github';
+import { getInput, info, setFailed } from '@actions/core';
+import { getOctokit, context } from '@actions/github';
 import sodium from 'libsodium-wrappers';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getPublicKey(octokit: any, owner: string, repo: string) {
-  const {data: keyData} = await octokit.actions.getRepoPublicKey({
+  const { data: keyData } = octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
     owner,
-    repo
-  });
+    repo,
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
   return keyData;
 }
 
 const addOrUpdateSecret = async (secretName: string, secretValue: string) => {
   const myToken = getInput('GITHUB_TOKEN');
   const octokit = getOctokit(myToken);
-  const {owner, repo} = context.repo;
+  const { owner, repo } = context.repo;
 
   try {
     await sodium.ready;
@@ -53,7 +56,7 @@ const addOrUpdateVariable = async (
 ) => {
   const myToken = getInput('GITHUB_TOKEN');
   const octokit = getOctokit(myToken);
-  const {owner, repo} = context.repo;
+  const { owner, repo } = context.repo;
 
   try {
     await octokit.request(

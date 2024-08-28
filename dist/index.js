@@ -15,9 +15,12 @@ const github_1 = __nccwpck_require__(5438);
 const libsodium_wrappers_1 = __importDefault(__nccwpck_require__(713));
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getPublicKey(octokit, owner, repo) {
-    const { data: keyData } = await octokit.actions.getRepoPublicKey({
+    const { data: keyData } = octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
         owner,
-        repo
+        repo,
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
     });
     return keyData;
 }
