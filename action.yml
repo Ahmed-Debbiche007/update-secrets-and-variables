@@ -1,0 +1,19 @@
+name: "Update a repository environment for actions (secrets and variables)"
+description: "Update a repository environment for actions (secrets and variables)"
+inputs:
+  GITHUB_TOKEN:
+    description: "The token to authenticate with the GitHub API"
+    required: true
+  TYPE:
+    description: "The type of the item to add or update (secrets or variables)"
+    required: true
+  NAME:
+    description: "The name of the item to add or update"
+    required: true
+  VALUE:
+    description: "The value of the item to add or update"
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
